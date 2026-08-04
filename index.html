@@ -5,17 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>墨韵轩 · 古宅红木博客</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
-    <!-- ============================================================
-         改动点 ①：引入 player.js（播放器核心逻辑）
-         位置：<head> 区域，其他脚本之后，</head> 之前
-         ============================================================ -->
+
+    <!-- ================================================================
+         ═════════════════════════════════════════════════════════════════
+         板块① ：引入播放器核心 JS
+         ═════════════════════════════════════════════════════════════════
+         说明：player.js 是播放器的"大脑"，包含所有功能逻辑
+               （播放/暂停/上一首/下一首/进度拖拽/频谱/效果切换等）
+         后期修改：如果你想改播放器的功能逻辑，就去改 player.js
+                   如果你只是想改颜色/样式，看板块③
+         ═════════════════════════════════════════════════════════════════
+         ================================================================ -->
     <script src="player.js"></script>
+
     <style>
-        /* ===== 原有首页样式（完全保留，未做任何修改） ===== */
-        * { margin:0; padding:0; box-sizing:border-box; }
+        /* ================================================================
+             ═════════════════════════════════════════════════════════════════
+             板块② ：博客原有样式（完全不动）
+             ═════════════════════════════════════════════════════════════════
+             说明：这部分是你博客的样式，与播放器无关
+                   包括：页面布局、文章列表、分类、留言、按钮等
+                   后期修改：如果你想改博客的颜色/字体/间距，在这里改
+                   搜索定位：Ctrl+F 搜索 "博客原有样式"
+             ═════════════════════════════════════════════════════════════════
+             ================================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             background-color: #f6efe8;
-            font-family: '华文楷体','KaiTi','SimSun','宋体', serif;
+            font-family: '华文楷体', 'KaiTi', 'SimSun', '宋体', serif;
             color: #3e2723;
             min-height: 100vh;
             display: flex;
@@ -24,8 +45,15 @@
             -webkit-tap-highlight-color: transparent;
             padding: 0;
         }
-        a { text-decoration: none; color: inherit; }
-        .container { width:100%; max-width:1200px; padding:0 20px; }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
 
         .hero {
             position: relative;
@@ -33,7 +61,7 @@
             min-height: 320px;
             background: linear-gradient(145deg, #6b3a2a 0%, #4d281b 40%, #3d1f15 80%, #2d150e 100%);
             border-radius: 0 0 40px 40px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -45,72 +73,108 @@
         .hero::before {
             content: '';
             position: absolute;
-            top:0; left:0; width:100%; height:100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-image: repeating-linear-gradient(90deg,
-                rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 4px,
-                transparent 4px, transparent 8px);
+                    rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0.05) 4px,
+                    transparent 4px, transparent 8px);
             pointer-events: none;
         }
         .hero .branch-left {
-            position: absolute; top:20px; left:10px;
-            width:120px; height:80px;
-            background: radial-gradient(ellipse at 20% 100%, rgba(60,40,30,0.6) 0%, transparent 70%);
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            width: 120px;
+            height: 80px;
+            background: radial-gradient(ellipse at 20% 100%, rgba(60, 40, 30, 0.6) 0%, transparent 70%);
             transform: rotate(-10deg);
-            pointer-events: none; opacity:0.5;
+            pointer-events: none;
+            opacity: 0.5;
         }
         .hero .branch-right {
-            position: absolute; top:10px; right:10px;
-            width:100px; height:60px;
-            background: radial-gradient(ellipse at 80% 100%, rgba(60,40,30,0.5) 0%, transparent 70%);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px;
+            height: 60px;
+            background: radial-gradient(ellipse at 80% 100%, rgba(60, 40, 30, 0.5) 0%, transparent 70%);
             transform: rotate(15deg);
-            pointer-events: none; opacity:0.5;
+            pointer-events: none;
+            opacity: 0.5;
         }
         .hero .bird {
-            position: absolute; top:40px; right:80px;
-            font-size:28px; color:rgba(255,215,140,0.15);
+            position: absolute;
+            top: 40px;
+            right: 80px;
+            font-size: 28px;
+            color: rgba(255, 215, 140, 0.15);
             transform: rotate(-5deg);
-            pointer-events: none; display:none;
+            pointer-events: none;
+            display: none;
         }
-        .hero .bird2 { right:160px; top:60px; font-size:20px; }
-        @media (min-width:768px) { .hero .bird { display:block; } }
+        .hero .bird2 {
+            right: 160px;
+            top: 60px;
+            font-size: 20px;
+        }
+        @media (min-width:768px) {
+            .hero .bird {
+                display: block;
+            }
+        }
 
         .hero-content {
-            position: relative; z-index:2;
+            position: relative;
+            z-index: 2;
             text-align: center;
             color: #f5e6d3;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
         }
         .hero-logo {
             display: inline-block;
-            width:80px; height:80px; border-radius:50%;
-            background: #c23531; color:#f5e6d3;
-            font-size:40px; line-height:80px; text-align:center;
-            font-family: '华文楷体','KaiTi',serif;
-            font-weight:bold;
-            box-shadow: 0 4px 20px rgba(194,53,49,0.4);
-            margin-bottom:8px;
-            border:3px solid #e8c9a0;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #c23531;
+            color: #f5e6d3;
+            font-size: 40px;
+            line-height: 80px;
+            text-align: center;
+            font-family: '华文楷体', 'KaiTi', serif;
+            font-weight: bold;
+            box-shadow: 0 4px 20px rgba(194, 53, 49, 0.4);
+            margin-bottom: 8px;
+            border: 3px solid #e8c9a0;
             transition: transform 0.3s;
-            cursor:default;
+            cursor: default;
         }
         .hero-title {
-            font-size:36px; font-weight:normal; letter-spacing:12px;
-            color:#f5e6d3; margin-bottom:4px;
-            font-family: '华文楷体','KaiTi',serif;
+            font-size: 36px;
+            font-weight: normal;
+            letter-spacing: 12px;
+            color: #f5e6d3;
+            margin-bottom: 4px;
+            font-family: '华文楷体', 'KaiTi', serif;
         }
         .hero-sub {
-            font-size:14px; color:#d4c5b0; letter-spacing:4px;
-            font-family: 'SimSun','宋体',serif;
-            opacity:0.85; margin-bottom:8px;
+            font-size: 14px;
+            color: #d4c5b0;
+            letter-spacing: 4px;
+            font-family: 'SimSun', '宋体', serif;
+            opacity: 0.85;
+            margin-bottom: 8px;
         }
 
         .nav-bar {
-            position: relative; z-index:3;
-            margin-top:12px;
+            position: relative;
+            z-index: 3;
+            margin-top: 12px;
             background: linear-gradient(180deg, #7a4a34, #5a3222);
             border-radius: 12px 12px 4px 4px;
             padding: 6px 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,215,140,0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 215, 140, 0.2);
             border: 1px solid #4d281b;
             border-top-color: #9a6a54;
             display: flex;
@@ -121,29 +185,43 @@
             margin-left: auto;
             margin-right: auto;
             background-image: repeating-linear-gradient(90deg,
-                transparent 0px, transparent 20px,
-                rgba(0,0,0,0.03) 20px, rgba(0,0,0,0.03) 22px);
+                    transparent 0px, transparent 20px,
+                    rgba(0, 0, 0, 0.03) 20px, rgba(0, 0, 0, 0.03) 22px);
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
         }
-        .nav-bar::-webkit-scrollbar { height:0; }
+        .nav-bar::-webkit-scrollbar {
+            height: 0;
+        }
         .nav-bar::before,
         .nav-bar::after {
             content: '☯';
-            font-size:14px; color:#d4b08c; opacity:0.3;
-            align-self:center; flex-shrink:0;
+            font-size: 14px;
+            color: #d4b08c;
+            opacity: 0.3;
+            align-self: center;
+            flex-shrink: 0;
         }
         .nav-bar a {
-            color:#f0e0d0; padding:6px 12px; font-size:15px; letter-spacing:2px;
-            border-radius:4px; transition:0.2s;
-            font-family: '华文楷体','KaiTi',serif;
-            white-space:nowrap; cursor:pointer; flex-shrink:0;
+            color: #f0e0d0;
+            padding: 6px 12px;
+            font-size: 15px;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            transition: 0.2s;
+            font-family: '华文楷体', 'KaiTi', serif;
+            white-space: nowrap;
+            cursor: pointer;
+            flex-shrink: 0;
         }
-        .nav-bar a:hover { background:rgba(255,215,140,0.15); color:#ffe8c8; }
+        .nav-bar a:hover {
+            background: rgba(255, 215, 140, 0.15);
+            color: #ffe8c8;
+        }
         .nav-bar a.active {
-            background:rgba(194,53,49,0.3);
-            color:#ffe8c8;
-            border-bottom:2px solid #c23531;
+            background: rgba(194, 53, 49, 0.3);
+            color: #ffe8c8;
+            border-bottom: 2px solid #c23531;
         }
 
         .main {
@@ -153,9 +231,16 @@
             margin: 20px 0 40px;
         }
         @media (min-width:820px) {
-            .main { flex-direction: row; align-items: flex-start; }
-            .main-content { flex:7; }
-            .sidebar { flex:3; }
+            .main {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+            .main-content {
+                flex: 7;
+            }
+            .sidebar {
+                flex: 3;
+            }
         }
 
         .card {
@@ -163,427 +248,772 @@
             border: 1px solid #e8d5c0;
             border-radius: 12px;
             padding: 24px 28px;
-            box-shadow: 0 2px 12px rgba(60,40,30,0.06);
+            box-shadow: 0 2px 12px rgba(60, 40, 30, 0.06);
             margin-bottom: 20px;
             transition: box-shadow 0.2s;
         }
-        .card:hover { box-shadow: 0 4px 24px rgba(60,40,30,0.12); }
+        .card:hover {
+            box-shadow: 0 4px 24px rgba(60, 40, 30, 0.12);
+        }
         .card-title {
-            font-size:18px; font-weight:normal; letter-spacing:4px;
-            color:#4d281b;
-            border-bottom:2px solid #e8d5c0;
-            padding-bottom:10px; margin-bottom:16px;
-            font-family: '华文楷体','KaiTi',serif;
+            font-size: 18px;
+            font-weight: normal;
+            letter-spacing: 4px;
+            color: #4d281b;
+            border-bottom: 2px solid #e8d5c0;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            font-family: '华文楷体', 'KaiTi', serif;
         }
 
         .post-item {
-            padding:16px 8px;
-            border-bottom:1px dashed #e8d5c0;
-            cursor:pointer;
+            padding: 16px 8px;
+            border-bottom: 1px dashed #e8d5c0;
+            cursor: pointer;
             transition: background 0.15s;
-            border-radius:4px;
+            border-radius: 4px;
         }
-        .post-item:last-child { border-bottom:none; }
-        .post-item:hover { background:#f8f0e8; }
+        .post-item:last-child {
+            border-bottom: none;
+        }
+        .post-item:hover {
+            background: #f8f0e8;
+        }
         .post-item .title {
-            font-size:20px; font-weight:normal;
-            font-family: '华文楷体','KaiTi',serif;
-            color:#3e2723; letter-spacing:1px;
-            margin-bottom:4px;
+            font-size: 20px;
+            font-weight: normal;
+            font-family: '华文楷体', 'KaiTi', serif;
+            color: #3e2723;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
         }
         .post-item .meta {
-            font-size:13px; color:#8a7a6a;
-            display:flex; flex-wrap:wrap; gap:12px;
-            margin-bottom:6px;
+            font-size: 13px;
+            color: #8a7a6a;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 6px;
         }
         .post-item .excerpt {
-            font-size:14px; line-height:1.7;
-            color:#5a4a3a; font-family: 'SimSun','宋体',serif;
-            display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #5a4a3a;
+            font-family: 'SimSun', '宋体', serif;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         .post-item .tags {
-            margin-top:8px; display:flex; flex-wrap:wrap; gap:6px;
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
         }
         .post-item .tags span {
-            background:#efe4d8; color:#6b4a3a; font-size:12px;
-            padding:2px 12px; border-radius:12px; border:1px solid #ddd0c0;
+            background: #efe4d8;
+            color: #6b4a3a;
+            font-size: 12px;
+            padding: 2px 12px;
+            border-radius: 12px;
+            border: 1px solid #ddd0c0;
         }
 
-        .sidebar .profile { text-align:center; }
+        .sidebar .profile {
+            text-align: center;
+        }
         .sidebar .profile .avatar {
-            font-size:48px; background:#e8d5c0;
-            width:80px; height:80px; border-radius:50%;
-            display:flex; align-items:center; justify-content:center;
-            margin:0 auto 12px;
-            border:2px solid #c23531;
+            font-size: 48px;
+            background: #e8d5c0;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            border: 2px solid #c23531;
         }
         .sidebar .profile .name {
-            font-size:20px; letter-spacing:4px;
-            font-family: '华文楷体','KaiTi',serif;
+            font-size: 20px;
+            letter-spacing: 4px;
+            font-family: '华文楷体', 'KaiTi', serif;
         }
         .sidebar .profile .desc {
-            font-size:14px; color:#6b5a4a;
-            font-family: 'SimSun','宋体',serif; margin-top:4px;
+            font-size: 14px;
+            color: #6b5a4a;
+            font-family: 'SimSun', '宋体', serif;
+            margin-top: 4px;
         }
-        .category-list { list-style:none; }
+        .category-list {
+            list-style: none;
+        }
         .category-list li {
-            padding:6px 0;
-            border-bottom:1px dashed #e8d5c0;
-            display:flex; justify-content:space-between;
-            cursor:pointer; transition:0.1s;
+            padding: 6px 0;
+            border-bottom: 1px dashed #e8d5c0;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: 0.1s;
         }
-        .category-list li:hover { background:#f8f0e8; }
-        .category-list li .count { color:#8a7a6a; font-size:13px; }
+        .category-list li:hover {
+            background: #f8f0e8;
+        }
+        .category-list li .count {
+            color: #8a7a6a;
+            font-size: 13px;
+        }
 
         .post-detail .title {
-            font-size:28px; font-weight:normal;
-            font-family: '华文楷体','KaiTi',serif;
-            letter-spacing:2px; margin-bottom:8px;
+            font-size: 28px;
+            font-weight: normal;
+            font-family: '华文楷体', 'KaiTi', serif;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
         }
         .post-detail .meta {
-            font-size:14px; color:#8a7a6a;
-            margin-bottom:16px;
-            border-bottom:1px dashed #ddd0c0;
-            padding-bottom:12px;
-            display:flex; flex-wrap:wrap; gap:16px;
+            font-size: 14px;
+            color: #8a7a6a;
+            margin-bottom: 16px;
+            border-bottom: 1px dashed #ddd0c0;
+            padding-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
         }
         .post-detail .body {
-            font-size:16px; line-height:2;
-            font-family: 'SimSun','宋体',serif;
-            color:#3e2723; margin-bottom:24px;
+            font-size: 16px;
+            line-height: 2;
+            font-family: 'SimSun', '宋体', serif;
+            color: #3e2723;
+            margin-bottom: 24px;
         }
-        .post-detail .body img { max-width:100%; height:auto; border-radius:6px; }
-        .post-detail .body a { color:#8b2500; text-decoration:underline; }
-        .post-detail .body a:hover { color:#c23531; }
+        .post-detail .body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .post-detail .body a {
+            color: #8b2500;
+            text-decoration: underline;
+        }
+        .post-detail .body a:hover {
+            color: #c23531;
+        }
         .post-detail .body video,
         .post-detail .body embed,
         .post-detail .body object,
-        .post-detail .body iframe { max-width:100%; border-radius:6px; }
+        .post-detail .body iframe {
+            max-width: 100%;
+            border-radius: 6px;
+        }
 
         .post-detail .nav-links {
-            display:flex; justify-content:space-between;
-            border-top:1px solid #e8d5c0;
-            padding-top:16px; font-size:14px;
-            flex-wrap:wrap; gap:12px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #e8d5c0;
+            padding-top: 16px;
+            font-size: 14px;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-        .post-detail .nav-links a { color:#8b2500; cursor:pointer; }
-        .post-detail .nav-links a:hover { text-decoration:underline; }
+        .post-detail .nav-links a {
+            color: #8b2500;
+            cursor: pointer;
+        }
+        .post-detail .nav-links a:hover {
+            text-decoration: underline;
+        }
 
         .like-area {
-            display:flex; align-items:center; gap:12px;
-            margin:16px 0 20px;
-            padding:12px 0;
-            border-top:1px solid #e8d5c0;
-            border-bottom:1px solid #e8d5c0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0 20px;
+            padding: 12px 0;
+            border-top: 1px solid #e8d5c0;
+            border-bottom: 1px solid #e8d5c0;
         }
         .like-area .like-btn {
-            background:none; border:none;
-            font-size:24px; cursor:pointer;
-            transition:0.2s; color:#8a7a6a;
-            display:flex; align-items:center; gap:6px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #8a7a6a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .like-area .like-btn:hover { color:#c23531; transform:scale(1.1); }
-        .like-area .like-btn.liked { color:#c23531; }
-        .like-area .like-count { font-size:16px; color:#4d281b; font-family:'SimSun','宋体',serif; }
+        .like-area .like-btn:hover {
+            color: #c23531;
+            transform: scale(1.1);
+        }
+        .like-area .like-btn.liked {
+            color: #c23531;
+        }
+        .like-area .like-count {
+            font-size: 16px;
+            color: #4d281b;
+            font-family: 'SimSun', '宋体', serif;
+        }
 
         .share-area {
-            margin-top:20px; padding-top:16px;
-            border-top:1px solid #e8d5c0;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e8d5c0;
         }
         .share-area .share-title {
-            font-size:14px; font-weight:normal;
-            font-family: '华文楷体','KaiTi',serif;
-            letter-spacing:2px; color:#4d281b; margin-bottom:10px;
+            font-size: 14px;
+            font-weight: normal;
+            font-family: '华文楷体', 'KaiTi', serif;
+            letter-spacing: 2px;
+            color: #4d281b;
+            margin-bottom: 10px;
         }
         .share-area .share-buttons {
-            display:flex; flex-wrap:wrap; gap:10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .share-area .share-buttons button {
-            padding:6px 14px;
-            border:1px solid #ddd0c0; border-radius:20px;
-            background:#fdf8f0; color:#4d281b;
-            cursor:pointer; font-family:'SimSun','宋体',serif;
-            font-size:13px; transition:0.2s;
-            display:flex; align-items:center; gap:4px;
+            padding: 6px 14px;
+            border: 1px solid #ddd0c0;
+            border-radius: 20px;
+            background: #fdf8f0;
+            color: #4d281b;
+            cursor: pointer;
+            font-family: 'SimSun', '宋体', serif;
+            font-size: 13px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         .share-area .share-buttons button:hover {
-            background:#efe4d8; border-color:#c23531;
+            background: #efe4d8;
+            border-color: #c23531;
         }
-        .share-area .share-buttons .btn-wechat { background:#07c160; color:#fff; border-color:#07c160; }
-        .share-area .share-buttons .btn-weibo { background:#ff8200; color:#fff; border-color:#ff8200; }
-        .share-area .share-buttons .btn-qq { background:#12b7f5; color:#fff; border-color:#12b7f5; }
+        .share-area .share-buttons .btn-wechat {
+            background: #07c160;
+            color: #fff;
+            border-color: #07c160;
+        }
+        .share-area .share-buttons .btn-weibo {
+            background: #ff8200;
+            color: #fff;
+            border-color: #ff8200;
+        }
+        .share-area .share-buttons .btn-qq {
+            background: #12b7f5;
+            color: #fff;
+            border-color: #12b7f5;
+        }
 
         .recommend {
-            margin-top:20px; border-top:1px solid #e8d5c0;
-            padding-top:16px;
+            margin-top: 20px;
+            border-top: 1px solid #e8d5c0;
+            padding-top: 16px;
         }
         .recommend h4 {
-            font-weight:normal; font-family:'华文楷体','KaiTi',serif;
-            letter-spacing:2px; font-size:16px; margin-bottom:10px;
+            font-weight: normal;
+            font-family: '华文楷体', 'KaiTi', serif;
+            letter-spacing: 2px;
+            font-size: 16px;
+            margin-bottom: 10px;
         }
         .recommend .rec-item {
-            padding:6px 0;
-            border-bottom:1px dashed #f0e8e0;
-            cursor:pointer; transition:0.1s;
+            padding: 6px 0;
+            border-bottom: 1px dashed #f0e8e0;
+            cursor: pointer;
+            transition: 0.1s;
         }
-        .recommend .rec-item:hover { background:#f8f0e8; }
+        .recommend .rec-item:hover {
+            background: #f8f0e8;
+        }
 
         .comment-section {
-            margin-top:24px; padding-top:16px;
-            border-top:2px solid #e8d5c0;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 2px solid #e8d5c0;
         }
         .comment-section .comment-toggle {
-            padding:8px 20px;
-            border:1px solid #c23531; border-radius:6px;
-            background:transparent; color:#c23531;
-            cursor:pointer; font-family:'华文楷体','KaiTi',serif;
-            font-size:14px; letter-spacing:2px; transition:0.2s;
+            padding: 8px 20px;
+            border: 1px solid #c23531;
+            border-radius: 6px;
+            background: transparent;
+            color: #c23531;
+            cursor: pointer;
+            font-family: '华文楷体', 'KaiTi', serif;
+            font-size: 14px;
+            letter-spacing: 2px;
+            transition: 0.2s;
         }
         .comment-section .comment-toggle:hover {
-            background:#c23531; color:#f5e6d3;
+            background: #c23531;
+            color: #f5e6d3;
         }
         .comment-section .giscus-placeholder {
-            min-height:100px; padding:20px 0; text-align:center;
-            color:#8a7a6a; font-family:'SimSun','宋体',serif;
+            min-height: 100px;
+            padding: 20px 0;
+            text-align: center;
+            color: #8a7a6a;
+            font-family: 'SimSun', '宋体', serif;
         }
 
         .font-switcher {
-            display:inline-block; margin-left:12px; position:relative;
+            display: inline-block;
+            margin-left: 12px;
+            position: relative;
         }
         .font-switcher select {
-            padding:2px 8px; border:1px solid #ddd0c0; border-radius:4px;
-            background:#fdf8f0; font-size:13px; font-family:'SimSun','宋体',serif;
-            color:#3e2723; outline:none; cursor:pointer;
+            padding: 2px 8px;
+            border: 1px solid #ddd0c0;
+            border-radius: 4px;
+            background: #fdf8f0;
+            font-size: 13px;
+            font-family: 'SimSun', '宋体', serif;
+            color: #3e2723;
+            outline: none;
+            cursor: pointer;
         }
-        .font-switcher select:hover { border-color:#c23531; }
+        .font-switcher select:hover {
+            border-color: #c23531;
+        }
 
         .back-to-top {
-            position:fixed;
-            bottom:30px;
-            right:20px;
-            z-index:998;
-            width:44px;
-            height:44px;
-            border-radius:50%;
-            background:#7a4a34;
-            color:#f5e6d3;
-            border:2px solid #c23531;
-            font-size:22px;
-            cursor:pointer;
-            box-shadow:0 4px 16px rgba(0,0,0,0.25);
-            display:none;
-            align-items:center;
-            justify-content:center;
-            transition:0.3s;
+            position: fixed;
+    
+            z-index: 998;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #7a4a34;
+            color: #f5e6d3;
+            border: 2px solid #c23531;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
         }
-        .back-to-top:hover { background:#5a3222; transform:scale(1.05); }
-        .back-to-top.show { display:flex; }
+        .back-to-top:hover {
+            background: #5a3222;
+            transform: scale(1.05);
+        }
+        .back-to-top.show {
+            display: flex;
+        }
 
         .interact-tabs {
-            display:flex; gap:0;
-            border-bottom:2px solid #e8d5c0;
-            margin-bottom:20px;
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid #e8d5c0;
+            margin-bottom: 20px;
         }
         .interact-tabs .tab-btn {
-            padding:10px 24px;
-            background:transparent; border:none;
-            border-bottom:3px solid transparent;
-            cursor:pointer;
-            font-family:'华文楷体','KaiTi',serif;
-            font-size:16px; letter-spacing:2px;
-            color:#8a7a6a; transition:0.2s;
+            padding: 10px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-family: '华文楷体', 'KaiTi', serif;
+            font-size: 16px;
+            letter-spacing: 2px;
+            color: #8a7a6a;
+            transition: 0.2s;
         }
-        .interact-tabs .tab-btn:hover { color:#4d281b; }
+        .interact-tabs .tab-btn:hover {
+            color: #4d281b;
+        }
         .interact-tabs .tab-btn.active {
-            color:#c23531;
-            border-bottom-color:#c23531;
+            color: #c23531;
+            border-bottom-color: #c23531;
         }
-        .interact-tab-content { display:none; }
-        .interact-tab-content.active { display:block; }
+        .interact-tab-content {
+            display: none;
+        }
+        .interact-tab-content.active {
+            display: block;
+        }
         .interact-tab-content .message-item {
-            padding:12px 0; border-bottom:1px dashed #e8d5c0;
+            padding: 12px 0;
+            border-bottom: 1px dashed #e8d5c0;
         }
         .interact-tab-content .message-item .msg-header {
-            display:flex; justify-content:space-between; align-items:center;
-            font-size:14px; color:#6b5a4a; font-family:'SimSun','宋体',serif;
-            flex-wrap:wrap; gap:4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #6b5a4a;
+            font-family: 'SimSun', '宋体', serif;
+            flex-wrap: wrap;
+            gap: 4px;
         }
         .interact-tab-content .message-item .msg-header .nickname {
-            font-weight:bold; color:#4d281b;
+            font-weight: bold;
+            color: #4d281b;
         }
         .interact-tab-content .message-item .msg-header .time {
-            font-size:12px; color:#8a7a6a;
+            font-size: 12px;
+            color: #8a7a6a;
         }
         .interact-tab-content .message-item .msg-content {
-            margin-top:4px; font-size:15px; line-height:1.7;
-            color:#3e2723; font-family:'SimSun','宋体',serif;
+            margin-top: 4px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #3e2723;
+            font-family: 'SimSun', '宋体', serif;
         }
         .interact-tab-content .message-item .msg-actions {
-            margin-top:6px; display:flex; gap:12px; align-items:center; font-size:13px;
+            margin-top: 6px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-size: 13px;
         }
         .interact-tab-content .message-item .msg-actions .like-msg-btn {
-            background:none; border:none; cursor:pointer;
-            color:#8a7a6a; font-size:14px; transition:0.2s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #8a7a6a;
+            font-size: 14px;
+            transition: 0.2s;
         }
-        .interact-tab-content .message-item .msg-actions .like-msg-btn:hover { color:#c23531; }
-        .interact-tab-content .message-item .msg-actions .like-msg-btn.liked { color:#c23531; }
+        .interact-tab-content .message-item .msg-actions .like-msg-btn:hover {
+            color: #c23531;
+        }
+        .interact-tab-content .message-item .msg-actions .like-msg-btn.liked {
+            color: #c23531;
+        }
 
         .message-form {
-            margin-top:20px; padding-top:16px;
-            border-top:2px solid #e8d5c0;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 2px solid #e8d5c0;
         }
         .message-form .form-row {
-            display:flex; gap:12px; flex-wrap:wrap;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
         }
         .message-form .form-row .form-group {
-            flex:1; min-width:120px; margin-bottom:10px;
+            flex: 1;
+            min-width: 120px;
+            margin-bottom: 10px;
         }
         .message-form .form-group label {
-            display:block; font-size:13px; color:#4d281b;
-            font-weight:bold; margin-bottom:2px;
+            display: block;
+            font-size: 13px;
+            color: #4d281b;
+            font-weight: bold;
+            margin-bottom: 2px;
         }
         .message-form .form-group input,
         .message-form .form-group textarea {
-            width:100%; padding:6px 10px;
-            border:1px solid #ddd0c0; border-radius:4px;
-            font-family:'SimSun','宋体',serif;
-            font-size:14px; background:#fefcf8; outline:none;
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #ddd0c0;
+            border-radius: 4px;
+            font-family: 'SimSun', '宋体', serif;
+            font-size: 14px;
+            background: #fefcf8;
+            outline: none;
         }
         .message-form .form-group input:focus,
-        .message-form .form-group textarea:focus { border-color:#c23531; }
-        .message-form .form-group textarea { min-height:60px; resize:vertical; }
+        .message-form .form-group textarea:focus {
+            border-color: #c23531;
+        }
+        .message-form .form-group textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
 
         .chat-area {
-            max-height:400px; overflow-y:auto;
-            border:1px solid #e8d5c0; border-radius:8px;
-            padding:12px; background:#fefcf8; margin-bottom:12px;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e8d5c0;
+            border-radius: 8px;
+            padding: 12px;
+            background: #fefcf8;
+            margin-bottom: 12px;
         }
         .chat-area .chat-msg {
-            padding:6px 0; border-bottom:1px dashed #f0e8e0;
+            padding: 6px 0;
+            border-bottom: 1px dashed #f0e8e0;
         }
-        .chat-area .chat-msg:last-child { border-bottom:none; }
-        .chat-area .chat-msg .chat-name { font-weight:bold; color:#4d281b; }
-        .chat-area .chat-msg .chat-time { font-size:12px; color:#8a7a6a; margin-left:8px; }
-        .chat-area .chat-msg .chat-text { font-size:14px; margin-top:2px; }
+        .chat-area .chat-msg:last-child {
+            border-bottom: none;
+        }
+        .chat-area .chat-msg .chat-name {
+            font-weight: bold;
+            color: #4d281b;
+        }
+        .chat-area .chat-msg .chat-time {
+            font-size: 12px;
+            color: #8a7a6a;
+            margin-left: 8px;
+        }
+        .chat-area .chat-msg .chat-text {
+            font-size: 14px;
+            margin-top: 2px;
+        }
         .chat-input-row {
-            display:flex; gap:8px; align-items:center;
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
         .chat-input-row input {
-            flex:1; padding:8px 12px;
-            border:1px solid #ddd0c0; border-radius:6px;
-            font-size:14px; font-family:'SimSun','宋体',serif;
-            background:#fefcf8; outline:none; min-height:38px;
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd0c0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'SimSun', '宋体', serif;
+            background: #fefcf8;
+            outline: none;
+            min-height: 38px;
         }
-        .chat-input-row input:focus { border-color:#c23531; }
+        .chat-input-row input:focus {
+            border-color: #c23531;
+        }
         .chat-input-row button {
-            padding:6px 16px; border:none; border-radius:6px;
-            background:#c23531; color:#f5e6d3;
-            cursor:pointer; font-family:'华文楷体','KaiTi',serif;
-            font-size:14px; letter-spacing:1px; white-space:nowrap; min-height:38px;
+            padding: 6px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #c23531;
+            color: #f5e6d3;
+            cursor: pointer;
+            font-family: '华文楷体', 'KaiTi', serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            min-height: 38px;
         }
-        .chat-input-row button:hover { background:#a02a26; }
+        .chat-input-row button:hover {
+            background: #a02a26;
+        }
 
         .toast-msg {
-            position:fixed; bottom:100px; left:50%;
-            transform:translateX(-50%);
-            background:#3e2723; color:#f5e6d3;
-            padding:12px 28px; border-radius:8px;
-            font-size:15px; z-index:9999;
-            box-shadow:0 4px 20px rgba(0,0,0,0.3);
-            opacity:0; transition:opacity 0.3s;
-            pointer-events:none; max-width:90%;
-            text-align:center; font-family:'华文楷体','KaiTi',serif;
-            letter-spacing:1px;
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #3e2723;
+            color: #f5e6d3;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 15px;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            max-width: 90%;
+            text-align: center;
+            font-family: '华文楷体', 'KaiTi', serif;
+            letter-spacing: 1px;
         }
-        .toast-msg.show { opacity:1; }
+        .toast-msg.show {
+            opacity: 1;
+        }
 
         @media (max-width:600px) {
-            .hero { min-height:240px; padding:20px 16px; }
-            .hero-logo { width:60px; height:60px; font-size:30px; line-height:60px; }
-            .hero-title { font-size:24px; letter-spacing:6px; }
-            .hero-sub { font-size:12px; letter-spacing:2px; }
-            .nav-bar { padding:6px 20px; gap:4px 10px; border-radius:12px 12px 4px 4px; justify-content:center; flex-wrap:nowrap; overflow-x:auto; }
-            .nav-bar a { font-size:13px; padding:4px 8px; letter-spacing:1px; flex-shrink:0; }
-            .card { padding:16px; }
-            .post-item .title { font-size:18px; }
-            .back-to-top { width:36px; height:36px; font-size:18px; bottom:80px; right:14px; }
-            .share-area .share-buttons button { font-size:12px; padding:4px 10px; }
-            .interact-tabs .tab-btn { padding:8px 14px; font-size:14px; }
-            .chat-input-row { flex-wrap:wrap; }
-            .chat-input-row input { width:100%; flex:1 1 100%; }
-            .chat-input-row button { width:100%; flex:1 1 100%; }
+            .hero {
+                min-height: 240px;
+                padding: 20px 16px;
+            }
+            .hero-logo {
+                width: 60px;
+                height: 60px;
+                font-size: 30px;
+                line-height: 60px;
+            }
+            .hero-title {
+                font-size: 24px;
+                letter-spacing: 6px;
+            }
+            .hero-sub {
+                font-size: 12px;
+                letter-spacing: 2px;
+            }
+            .nav-bar {
+                padding: 6px 20px;
+                gap: 4px 10px;
+                border-radius: 12px 12px 4px 4px;
+                justify-content: center;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+            .nav-bar a {
+                font-size: 13px;
+                padding: 4px 8px;
+                letter-spacing: 1px;
+                flex-shrink: 0;
+            }
+            .card {
+                padding: 16px;
+            }
+            .post-item .title {
+                font-size: 18px;
+            }
+            .back-to-top {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+                bottom: 80px;
+                right: 14px;
+            }
+            .share-area .share-buttons button {
+                font-size: 12px;
+                padding: 4px 10px;
+            }
+            .interact-tabs .tab-btn {
+                padding: 8px 14px;
+                font-size: 14px;
+            }
+            .chat-input-row {
+                flex-wrap: wrap;
+            }
+            .chat-input-row input {
+                width: 100%;
+                flex: 1 1 100%;
+            }
+            .chat-input-row button {
+                width: 100%;
+                flex: 1 1 100%;
+            }
         }
         @media (max-width:400px) {
-            .nav-bar { padding:4px 12px; gap:3px 6px; }
-            .nav-bar a { font-size:12px; padding:3px 6px; }
+            .nav-bar {
+                padding: 4px 12px;
+                gap: 3px 6px;
+            }
+            .nav-bar a {
+                font-size: 12px;
+                padding: 3px 6px;
+            }
         }
 
-        /* ============================================================
-           改动点 ②：播放器样式（来自 player.js，已修复拖拽选中问题）
-           位置：原有样式之后
-           ============================================================ */
 
-        /* ---- 播放器根容器 ---- */
-        #playerToggleWrapper,
-        #playerPanel,
-        #playerEffectPanel {
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-        }
+        /* ================================================================
+             ═════════════════════════════════════════════════════════════════
+             板块③ ：🎵 播放器样式（红木复古风格）← 你要改颜色就在这里！
+             ═════════════════════════════════════════════════════════════════
+             说明：这是播放器的全部 CSS 样式，颜色来自 play1.html 样本
+                   所有颜色都是实色（不是半透明），保留红木质感
+             【后期改颜色】搜索下面的颜色代码替换：
+               - #c23531  → 砖红/中国红（主色调）
+               - #6b3a2a  → 红棕色（面板主色）
+               - #3d1f15  → 深红棕（面板渐变色）
+               - #5a2a1a  → 中红棕（效果面板主色）
+               - #2d150e  → 深红棕（效果面板渐变色）
+               - #f5e6d3  → 米白（主文字色）
+               - #e8d5c0  → 暖白（次要文字色）
+               - #9a6a54  → 红棕边框
+               - #7a4a34  → 深红棕边框
+             【后期改尺寸】搜索 "220px" 替换面板宽度
+             【Logo替换】在 3.1 悬浮球中有专门标注
+             ================================================================ */
 
-        /* 消除选中时的蓝色背景 */
-        #playerToggleWrapper *::selection,
-        #playerPanel *::selection,
-        #playerEffectPanel *::selection {
-            background: transparent !important;
-            color: inherit !important;
-        }
-
+        /* ---- 3.1 🟤 悬浮球（播放器入口按钮） ---- */
+        /* 说明：固定在屏幕左下角，点击展开/收起面板
+                 播放时自动旋转 + 呼吸光晕 + 波纹扩散
+           后期修改：
+             - 改大小：修改 width / height（默认 56px）
+             - 改位置：修改 bottom / left（可改成 right:20px 放右边）
+             - 改颜色：修改 background / border-color
+             - 换Logo：见下方 ★★★ 标注
+        */
         #playerToggleWrapper {
             position: fixed;
+            /* 固定在屏幕上，不随滚动移动 */
             bottom: 30px;
+            /* 距底部 30px */
             left: 20px;
+            /* 距左侧 20px，可改 right 放到右边 */
             z-index: 99999;
+            /* 最高层级，浮在所有内容之上 */
             width: 56px;
+            /* 圆形直径，改这里整体变大/变小 */
             height: 56px;
             border-radius: 50%;
             cursor: grab;
+            /* 鼠标拖拽手势 */
             touch-action: none;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            /* 触屏拖拽不滚动 */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
         #playerToggleWrapper .player-music-toggle {
             width: 100%;
             height: 100%;
             border-radius: 50%;
+            /* ★★★ 颜色配置 ★★★
+               背景色：#6b3a2a（红棕）
+               边框色：#c23531（砖红）
+               文字色：#f5e6d3（米白）
+            */
             background: #6b3a2a;
-            color: #e8d5c0;
+            color: #f5e6d3;
             border: 2px solid #c23531;
             font-size: 24px;
+            /* emoji 大小，如果要换图片见下方 */
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             transition: transform 0.2s;
         }
         #playerToggleWrapper .player-music-toggle:hover {
             transform: scale(1.05);
+            /* 鼠标悬停放大一点点 */;
         }
+
+        /* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+           ★★★ 如果你想替换 Logo（把 🎵 换成你的图片）★★★
+           ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+           找到上面 .player-music-toggle 里的这两行：
+             background: #6b3a2a;
+             font-size: 24px;
+           把它们注释掉（或删掉），换成下面两行：
+             background: url('你的logo.png') center/cover no-repeat;
+             font-size: 0;
+           图片建议：56×56 像素，透明背景 PNG
+           ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+        /* --- 播放时悬浮球旋转 --- */
         #playerToggleWrapper.player-playing {
             animation: player-spin 2s linear infinite;
         }
         @keyframes player-spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
+
+        /* --- 播放时呼吸光晕（一缩一放） --- */
         #playerToggleWrapper.player-playing .player-music-toggle {
             animation: player-breath 1.2s ease-in-out infinite;
         }
         @keyframes player-breath {
-            0%,100% { transform: scale(1); box-shadow: 0 0 20px rgba(194,53,49,0.25); }
-            50% { transform: scale(1.12); box-shadow: 0 0 35px rgba(194,53,49,0.5), 0 0 70px rgba(194,53,49,0.15); }
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(194, 53, 49, 0.25);
+            }
+            50% {
+                transform: scale(1.12);
+                box-shadow: 0 0 35px rgba(194, 53, 49, 0.5), 0 0 70px rgba(194, 53, 49, 0.15);
+            }
         }
+
+        /* --- 播放时波纹扩散（两道波纹，间隔 0.5 秒） --- */
         #playerToggleWrapper.player-playing::before,
         #playerToggleWrapper.player-playing::after {
             content: '';
@@ -593,32 +1023,60 @@
             right: -4px;
             bottom: -4px;
             border-radius: 50%;
-            border: 2px solid rgba(194,53,49,0.25);
+            border: 2px solid rgba(194, 53, 49, 0.25);
             animation: player-wave-expand 1.5s ease-out infinite;
             pointer-events: none;
+            /* 波纹不阻挡点击 */;
         }
-        #playerToggleWrapper.player-playing::after { animation-delay: 0.5s; }
+        #playerToggleWrapper.player-playing::after {
+            animation-delay: 0.5s;
+            /* 第二道波纹晚 0.5 秒 */;
+        }
         @keyframes player-wave-expand {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.6); opacity: 0; }
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.6);
+                opacity: 0;
+            }
         }
 
-        /* ---- 播放面板 ---- */
+
+        /* ---- 3.2 📦 主播放面板 ---- */
+        /* 说明：包含歌名 + 频谱 + 进度条 + 模式按钮 + 控制按钮
+                 宽度固定 220px，位置跟随悬浮球自动调整
+           后期修改：
+             - 改宽度：搜索 "220px" 替换
+             - 改背景色：搜索 "linear-gradient(145deg, #6b3a2a, #3d1f15)" 替换
+             - 改边框色：搜索 "#9a6a54" 替换
+             - 改内边距：搜索 "padding: 14px 16px" 替换
+             - 改圆角：搜索 "border-radius: 16px" 替换
+        */
         #playerPanel {
             position: fixed;
             z-index: 99998;
             width: 220px;
-            background: rgba(60,40,30,0.88);
+            /* ★★★ 面板宽度，改这里整体变宽/窄 ★★★ */
+            /* ★★★ 红棕实色渐变（来自 play1.html 样本）★★★ */
+            background: linear-gradient(145deg, #6b3a2a, #3d1f15);
             border-radius: 16px;
             padding: 14px 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            border: 1px solid rgba(154,106,84,0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border: 1px solid #9a6a54;
+            /* ★★★ 实色红棕边框 ★★★ */
             display: none;
-            color: #e8d5c0;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            /* 默认隐藏，点击悬浮球显示 */
+            color: #f5e6d3;
+            /* ★★★ 主文字色：米白 ★★★ */
         }
-        #playerPanel.player-open { display: block; }
+        #playerPanel.player-open {
+            display: block;
+            /* 面板打开时显示 */;
+        }
+
+        /* ---- 3.2.1 歌名（自动滚动） ---- */
         #playerPanel .player-song-wrap {
             width: 100%;
             overflow: hidden;
@@ -629,23 +1087,31 @@
         #playerPanel .player-song-name {
             display: inline-block;
             font-size: 14px;
-            color: #e8d5c0;
-            font-family: '华文楷体','KaiTi',serif;
+            color: #f5e6d3;
+            /* ★★★ 歌名字色：米白 ★★★ */
+            font-family: '华文楷体', 'KaiTi', serif;
             letter-spacing: 1px;
             white-space: nowrap;
             transform: translateX(0);
         }
+        /* 歌名超过容器宽度时自动滚动（10秒一个循环） */
         #playerPanel .player-song-name.player-scrolling {
             animation: player-scroll-text 10s linear infinite;
         }
         @keyframes player-scroll-text {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
         }
+
+        /* ---- 3.2.2 频谱显示区 ---- */
         #playerPanel .player-spectrum-area {
             height: 32px;
             margin-bottom: 6px;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 6px;
             padding: 2px 4px;
             display: flex;
@@ -654,6 +1120,8 @@
             gap: 3px;
             overflow: hidden;
         }
+
+        /* ---- 3.2.3 进度条 ---- */
         #playerPanel .player-progress-area {
             display: flex;
             align-items: center;
@@ -666,14 +1134,16 @@
             font-family: monospace;
             min-width: 28px;
         }
+        /* 进度条轨道 */
         #playerPanel .player-progress-wrap {
             flex: 1;
             height: 4px;
-            background: rgba(255,215,140,0.2);
+            background: rgba(255, 215, 140, 0.2);
             border-radius: 4px;
             cursor: pointer;
             position: relative;
         }
+        /* ★★★ 进度条填充色：砖红 #c23531 ★★★ */
         #playerPanel .player-progress-bar {
             height: 100%;
             width: 0%;
@@ -682,22 +1152,26 @@
             position: relative;
             transition: width 0.05s linear;
         }
+        /* ★★★ 进度条圆点：砖红 #c23531 + 米白边框 ★★★ */
         #playerPanel .player-progress-dot {
             position: absolute;
             top: 50%;
             right: -6px;
-            transform: translate(50%,-50%);
+            transform: translate(50%, -50%);
             width: 10px;
             height: 10px;
             border-radius: 50%;
             background: #c23531;
-            border: 2px solid #e8d5c0;
-            box-shadow: 0 0 10px rgba(194,53,49,0.4);
+            border: 2px solid #f5e6d3;
+            box-shadow: 0 0 10px rgba(194, 53, 49, 0.4);
             pointer-events: none;
             display: none;
         }
-        #playerPanel .player-progress-dot.player-show { display: block; }
+        #playerPanel .player-progress-dot.player-show {
+            display: block;
+        }
 
+        /* ---- 3.2.4 模式行（单循 / 循环 / 随机 / 效果） ---- */
         #playerPanel .player-mode-row {
             display: flex;
             justify-content: center;
@@ -706,56 +1180,61 @@
             margin-bottom: 8px;
             flex-wrap: nowrap;
         }
+        /* 模式按钮（未选中） */
         #playerPanel .player-mode-btn {
             background: none;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             color: #8a7a6a;
             font-size: 11px;
             padding: 2px 10px;
             cursor: pointer;
             transition: 0.2s;
-            font-family: '华文楷体','KaiTi',serif;
+            font-family: '华文楷体', 'KaiTi', serif;
             letter-spacing: 1px;
             min-height: 24px;
             white-space: nowrap;
             background-color: transparent;
             pointer-events: auto;
         }
+        /* ★★★ 模式按钮（选中）：砖红背景 #c23531 ★★★ */
         #playerPanel .player-mode-btn.player-active {
             background: #c23531;
             color: #fff;
             border-color: #c23531;
         }
         #playerPanel .player-mode-btn:hover {
-            background: rgba(194,53,49,0.15);
+            background: rgba(194, 53, 49, 0.15);
         }
 
+        /* 效果切换按钮（未选中） */
         #playerPanel .player-effect-toggle-btn {
             background: none;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             color: #8a7a6a;
             font-size: 11px;
             padding: 2px 10px;
             cursor: pointer;
             transition: 0.2s;
-            font-family: '华文楷体','KaiTi',serif;
+            font-family: '华文楷体', 'KaiTi', serif;
             letter-spacing: 1px;
             min-height: 24px;
             white-space: nowrap;
             background-color: transparent;
             pointer-events: auto;
         }
+        /* ★★★ 效果按钮（选中）：砖红背景 #c23531 ★★★ */
         #playerPanel .player-effect-toggle-btn.player-active {
             background: #c23531;
             color: #fff;
             border-color: #c23531;
         }
         #playerPanel .player-effect-toggle-btn:hover {
-            background: rgba(194,53,49,0.15);
+            background: rgba(194, 53, 49, 0.15);
         }
 
+        /* ---- 3.2.5 底部控制按钮（上一首 / 播放暂停 / 下一首） ---- */
         #playerPanel .player-panel-controls {
             display: flex;
             justify-content: center;
@@ -771,7 +1250,8 @@
             outline: none !important;
             -webkit-appearance: none;
             appearance: none;
-            color: #e8d5c0;
+            color: #f5e6d3;
+            /* ★★★ 按钮文字色：米白 ★★★ */
             cursor: pointer;
             padding: 0;
             min-width: 36px;
@@ -787,6 +1267,7 @@
             -webkit-tap-highlight-color: transparent;
             outline: none !important;
         }
+        /* ★★★ 悬停时变砖红 #c23531 ★★★ */
         #playerPanel .player-panel-controls button:hover {
             color: #c23531;
             transform: scale(1.06);
@@ -797,9 +1278,12 @@
             border-color: inherit !important;
             box-shadow: none !important;
         }
+
+        /* 播放按钮（三角/暂停竖线切换） */
         #playerPanel .player-panel-controls .player-play-btn {
             font-size: 18px;
         }
+        /* 暂停状态：显示为两条竖线（代替三角号） */
         #playerPanel .player-panel-controls .player-play-btn.player-paused {
             font-size: 0;
         }
@@ -809,16 +1293,19 @@
             display: block;
             width: 3px;
             height: 14px;
-            background: #e8d5c0;
+            background: #f5e6d3;
             border-radius: 1.5px;
             transition: background 0.15s;
             flex-shrink: 0;
         }
-        #playerPanel .player-panel-controls .player-play-btn.player-paused::before { margin-right: 3px; }
+        #playerPanel .player-panel-controls .player-play-btn.player-paused::before {
+            margin-right: 3px;
+        }
         #playerPanel .player-panel-controls .player-play-btn.player-paused:hover::before,
         #playerPanel .player-panel-controls .player-play-btn.player-paused:hover::after {
             background: #c23531;
         }
+        /* 播放状态：显示为三角号 */
         #playerPanel .player-panel-controls .player-play-btn.player-playing {
             font-size: 18px;
         }
@@ -826,6 +1313,8 @@
         #playerPanel .player-panel-controls .player-play-btn.player-playing::after {
             display: none;
         }
+
+        /* 点击反馈：瞬变砖红色（持续 150ms） */
         #playerPanel .player-panel-controls .player-feedback-red {
             color: #c23531 !important;
         }
@@ -834,68 +1323,88 @@
             background: #c23531 !important;
         }
 
-        /* ---- 效果面板 ---- */
+
+        /* ---- 3.3 🎛️ 效果选择面板（14种频谱效果） ---- */
+        /* 说明：点击"效果"按钮弹出，选择后点击"确定"关闭
+                 位置跟随主面板自动调整
+           后期修改：
+             - 改宽度：搜索 "220px" 替换（建议与主面板一致）
+             - 改背景色：搜索 "linear-gradient(145deg, #5a2a1a, #2d150e)" 替换
+             - 改边框色：搜索 "#7a4a34" 替换
+             - 改最大高度：搜索 "max-height: 320px" 替换
+        */
         #playerEffectPanel {
             position: fixed;
             z-index: 99997;
             width: 220px;
-            background: rgba(40,30,20,0.92);
+            /* ★★★ 深红棕实色渐变（来自 play1.html 样本）★★★ */
+            background: linear-gradient(145deg, #5a2a1a, #2d150e);
             border-radius: 16px;
             padding: 12px 14px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-            border: 1px solid rgba(122,74,52,0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            border: 1px solid #7a4a34;
+            /* ★★★ 实色深红棕边框 ★★★ */
             display: none;
-            color: #e8d5c0;
+            /* 默认隐藏 */
+            color: #f5e6d3;
             max-height: 320px;
+            /* 超过此高度出现滚动条 */
             overflow-y: auto;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
         }
-        #playerEffectPanel.player-open { display: block; }
+        #playerEffectPanel.player-open {
+            display: block;
+        }
+
+        /* 面板标题 */
         #playerEffectPanel .player-effect-title {
             font-size: 11px;
             color: #b0a090;
             text-align: center;
             margin-bottom: 8px;
             letter-spacing: 2px;
-            font-family: '华文楷体','KaiTi',serif;
-            border-bottom: 1px solid rgba(255,215,140,0.1);
+            font-family: '华文楷体', 'KaiTi', serif;
+            border-bottom: 1px solid rgba(255, 215, 140, 0.1);
             padding-bottom: 4px;
         }
+
+        /* 效果按钮网格 */
         #playerEffectPanel .player-effect-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 4px;
             justify-content: center;
         }
+
+        /* 效果按钮（未选中） */
         #playerEffectPanel .player-effect-btn {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 10px;
             color: #b0a090;
             font-size: 9px;
             padding: 3px 8px;
             cursor: pointer;
             transition: 0.2s;
-            font-family: '华文楷体','KaiTi',serif;
+            font-family: '华文楷体', 'KaiTi', serif;
             letter-spacing: 0.5px;
             white-space: nowrap;
             pointer-events: auto;
             -webkit-tap-highlight-color: transparent;
             outline: none !important;
         }
+        /* ★★★ 效果按钮（选中）：砖红背景 #c23531 ★★★ */
         #playerEffectPanel .player-effect-btn.player-active {
             background: #c23531;
             color: #fff;
             border-color: #c23531;
         }
         #playerEffectPanel .player-effect-btn:hover {
-            background: rgba(194,53,49,0.2);
+            background: rgba(194, 53, 49, 0.2);
         }
         #playerEffectPanel .player-effect-btn:active,
         #playerEffectPanel .player-effect-btn:focus {
-            background: rgba(255,255,255,0.08) !important;
-            border-color: rgba(255,255,255,0.06) !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            border-color: rgba(255, 255, 255, 0.06) !important;
             box-shadow: none !important;
         }
         #playerEffectPanel .player-effect-btn.player-active:active,
@@ -903,13 +1412,16 @@
             background: #c23531 !important;
             border-color: #c23531 !important;
         }
+
+        /* 确定按钮行 */
         #playerEffectPanel .player-effect-confirm-row {
             margin-top: 8px;
             display: flex;
             justify-content: center;
-            border-top: 1px solid rgba(255,215,140,0.1);
+            border-top: 1px solid rgba(255, 215, 140, 0.1);
             padding-top: 8px;
         }
+        /* ★★★ 确定按钮：砖红背景 #c23531 ★★★ */
         #playerEffectPanel .player-effect-confirm-btn {
             background: #c23531;
             border: none;
@@ -918,11 +1430,12 @@
             font-size: 11px;
             padding: 4px 20px;
             cursor: pointer;
-            font-family: '华文楷体','KaiTi',serif;
+            font-family: '华文楷体', 'KaiTi', serif;
             letter-spacing: 1px;
             pointer-events: auto;
             -webkit-tap-highlight-color: transparent;
             outline: none !important;
+            transition: 0.2s;
         }
         #playerEffectPanel .player-effect-confirm-btn:hover {
             background: #a02a26;
@@ -932,9 +1445,62 @@
             background: #c23531 !important;
             box-shadow: none !important;
         }
-        #playerEffectPanel::-webkit-scrollbar { width: 3px; }
-        #playerEffectPanel::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
-        #playerEffectPanel::-webkit-scrollbar-thumb { background: #c23531; border-radius: 2px; }
+
+        /* 效果面板滚动条（砖红色） */
+        #playerEffectPanel::-webkit-scrollbar {
+            width: 3px;
+        }
+        #playerEffectPanel::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+        #playerEffectPanel::-webkit-scrollbar-thumb {
+            background: #c23531;
+            border-radius: 2px;
+        }
+
+         /* ===== 修复拖拽选中问题 ===== */
+#playerToggleWrapper,
+#playerPanel,
+#playerEffectPanel {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* 彻底消除拖拽音乐悬浮球悬浮球，音乐符号和播放面板等元素选中时的蓝色背景-开始 */
+#playerToggleWrapper *::selection,
+#playerPanel *::selection,
+#playerEffectPanel *::selection {
+    background: transparent !important;
+    color: inherit !important;
+}
+
+/* 确保按钮在激活状态下保持圆角 */
+#playerPanel .player-panel-controls button,
+#playerPanel .player-mode-btn,
+#playerPanel .player-effect-toggle-btn,
+#playerEffectPanel .player-effect-btn,
+#playerEffectPanel .player-effect-confirm-btn {
+    -webkit-tap-highlight-color: transparent;
+    outline: none !important;
+}
+
+/* 针对 Chrome/Edge 的额外保护 */
+#playerPanel .player-panel-controls button:active,
+#playerPanel .player-panel-controls button:focus,
+#playerPanel .player-mode-btn:active,
+#playerPanel .player-mode-btn:focus,
+#playerPanel .player-effect-toggle-btn:active,
+#playerPanel .player-effect-toggle-btn:focus,
+#playerEffectPanel .player-effect-btn:active,
+#playerEffectPanel .player-effect-btn:focus {
+    background: transparent !important;
+    border-color: inherit !important;
+    box-shadow: none !important;
+}
+/* 彻底消除拖拽音乐悬浮球悬浮球，音乐符号和播放面板等元素选中时的蓝色背景-结束 */
     </style>
 </head>
 <body>
@@ -942,19 +1508,34 @@
     <div id="toastContainer" class="toast-msg"></div>
     <button class="back-to-top" id="backToTop" title="回到顶部">↑</button>
 
-    <!-- ============================================================
-         改动点 ③：播放器 HTML 结构（新版本，来自 player.js）
-         位置：原旧播放器代码的位置
-         ============================================================ -->
+
+    <!-- ================================================================
+         ═════════════════════════════════════════════════════════════════
+         板块④ ：🎵 播放器 HTML 结构
+         ═════════════════════════════════════════════════════════════════
+         说明：这是播放器的所有 DOM 元素
+               包括：悬浮球（入口）+ 主面板（歌名/频谱/进度条/按钮）+ 效果面板
+         后期修改：一般不用动这里，改颜色去板块③，改功能去 player.js
+         搜索定位：Ctrl+F 搜索 "播放器 HTML 结构"
+         ================================================================ -->
+
+    <!-- 4.1 🟤 悬浮球（播放器入口按钮） -->
+    <!-- 说明：点击这个球展开/收起面板，拖拽可移动位置 -->
     <div id="playerToggleWrapper">
         <div class="player-music-toggle" id="playerMusicToggle">🎵</div>
+        <!-- ★★★ 把 🎵 换成图片 Logo 的方法见板块③ 3.1 中的注释 ★★★ -->
     </div>
 
+    <!-- 4.2 📦 主播放面板 -->
+    <!-- 说明：包含歌名、频谱、进度条、模式切换、播放控制 -->
     <div id="playerPanel">
+        <!-- 歌名（自动滚动） -->
         <div class="player-song-wrap">
             <span class="player-song-name" id="playerSongName">🎵 加载中...</span>
         </div>
+        <!-- 频谱显示区 -->
         <div class="player-spectrum-area" id="playerSpectrumArea"></div>
+        <!-- 进度条 -->
         <div class="player-progress-area">
             <span class="player-progress-time" id="playerCurrentTime">00:00</span>
             <div class="player-progress-wrap" id="playerProgressWrap">
@@ -964,12 +1545,14 @@
             </div>
             <span class="player-progress-time" id="playerTotalTime">03:00</span>
         </div>
+        <!-- 模式行：单循 / 循环 / 随机 / 效果 -->
         <div class="player-mode-row">
             <button class="player-mode-btn" data-mode="single">单循</button>
             <button class="player-mode-btn player-active" data-mode="order">循环</button>
             <button class="player-mode-btn" data-mode="random">随机</button>
             <button class="player-effect-toggle-btn" id="playerEffectToggleBtn">效果</button>
         </div>
+        <!-- 控制按钮：上一首 / 播放暂停 / 下一首 -->
         <div class="player-panel-controls">
             <button id="playerPrevBtn">⏮</button>
             <button class="player-play-btn player-playing" id="playerPlayBtn">▶</button>
@@ -977,6 +1560,8 @@
         </div>
     </div>
 
+    <!-- 4.3 🎛️ 效果选择面板（14种频谱效果） -->
+    <!-- 说明：点击"效果"按钮弹出，选择后点击"确定"关闭 -->
     <div id="playerEffectPanel">
         <div class="player-effect-title">✦ 频谱效果 ✦</div>
         <div class="player-effect-grid" id="playerEffectGrid"></div>
@@ -985,7 +1570,15 @@
         </div>
     </div>
 
-    <!-- ===== 原有首页内容（完全不变） ===== -->
+
+    <!-- ================================================================
+         ═════════════════════════════════════════════════════════════════
+         板块⑤ ：博客 HTML 结构（原有内容，完全不动）
+         ═════════════════════════════════════════════════════════════════
+         说明：这是你博客的页面内容，与播放器无关
+         后期修改：如果你想改博客的布局/文字/菜单，在这里改
+         搜索定位：Ctrl+F 搜索 "博客 HTML 结构"
+         ================================================================ -->
     <div class="container">
         <header class="hero">
             <div class="branch-left"></div>
@@ -1028,11 +1621,21 @@
         </footer>
     </div>
 
+
+    <!-- ================================================================
+         ═════════════════════════════════════════════════════════════════
+         板块⑥ ：博客 JavaScript（原有逻辑，完全不动）
+         ═════════════════════════════════════════════════════════════════
+         说明：这是你博客的核心 JS，处理文章加载/渲染/分类/留言/点赞等
+         后期修改：如果你想改博客功能，在这里改
+         搜索定位：Ctrl+F 搜索 "博客 JavaScript"
+         ================================================================ -->
     <script src="common.js"></script>
     <script>
-        // ============================================================
-        //  前台专用脚本（完全保留原有逻辑，仅增加播放器初始化）
-        // ============================================================
+        // ================================================================
+        //  博客 JavaScript（完全保留原有逻辑，一个字都没改）
+        //  说明：文章列表、分类、留言、点赞、分享、Giscus 评论等
+        // ================================================================
 
         var currentPage = 'home';
         var currentPostId = null;
@@ -1049,7 +1652,8 @@
             if (titleEl && siteSettings.title) titleEl.textContent = siteSettings.title;
             if (subEl && siteSettings.subtitle) subEl.textContent = siteSettings.subtitle;
             if (authorNameEl && siteSettings.authorName) authorNameEl.textContent = siteSettings.authorName;
-            if (authorDescEl && siteSettings.authorDesc) authorDescEl.innerHTML = siteSettings.authorDesc.replace(/\n/g, '<br>');
+            if (authorDescEl && siteSettings.authorDesc) authorDescEl.innerHTML = siteSettings.authorDesc.replace(/\n/g,
+            '<br>');
         }
 
         function applyFontSettings() {
@@ -1085,7 +1689,8 @@
                 if (!existingStyle) {
                     var style = document.createElement('style');
                     style.id = 'custom-font-' + safeFontName;
-                    style.textContent = '@font-face { font-family: "' + fontFamilyName + '"; src: url("' + fontEntry.path + '") format("truetype"); font-weight: normal; font-style: normal; }';
+                    style.textContent = '@font-face { font-family: "' + fontFamilyName + '"; src: url("' + fontEntry
+                        .path + '") format("truetype"); font-weight: normal; font-style: normal; }';
                     document.head.appendChild(style);
                 }
 
@@ -1162,7 +1767,8 @@
                 setTimeout(renderFontSwitcher, 50);
             } catch (err) {
                 console.error('渲染页面出错:', err);
-                container.innerHTML = '<div class="card"><div class="card-title">⚠️ 渲染错误</div><p>' + err.message + '</p></div>';
+                container.innerHTML = '<div class="card"><div class="card-title">⚠️ 渲染错误</div><p>' + err.message +
+                    '</p></div>';
             }
         }
 
@@ -1226,8 +1832,11 @@
                 html += '<p style="color:#8a7a6a;">暂无分类。</p>';
             } else {
                 for (var cat in map) {
-                    html += '<div style="padding:6px 0; border-bottom:1px dashed #e8d5c0; cursor:pointer;" onclick="filterByCategory(\'' + cat + '\')">';
-                    html += '<span>' + escapeHtml(cat) + '</span> <span style="color:#8a7a6a;float:right;">' + map[cat] + ' 篇</span>';
+                    html +=
+                        '<div style="padding:6px 0; border-bottom:1px dashed #e8d5c0; cursor:pointer;" onclick="filterByCategory(\'' +
+                        cat + '\')">';
+                    html += '<span>' + escapeHtml(cat) + '</span> <span style="color:#8a7a6a;float:right;">' + map[
+                        cat] + ' 篇</span>';
                     html += '</div>';
                 }
             }
@@ -1252,8 +1861,10 @@
             var html = '<div class="card">';
             html += '<div class="card-title">💬 互动中心</div>';
             html += '<div class="interact-tabs">';
-            html += '<button class="tab-btn active" onclick="switchInteractTab(this, \'board\')">📝 留言板</button>';
-            html += '<button class="tab-btn" onclick="switchInteractTab(this, \'chat\')">💬 实时聊天</button>';
+            html +=
+                '<button class="tab-btn active" onclick="switchInteractTab(this, \'board\')">📝 留言板</button>';
+            html +=
+                '<button class="tab-btn" onclick="switchInteractTab(this, \'chat\')">💬 实时聊天</button>';
             html += '</div>';
 
             html += '<div class="interact-tab-content active" id="tabBoard">';
@@ -1263,24 +1874,30 @@
                 sorted.forEach(function(m) {
                     html += '<div class="message-item">';
                     html += '<div class="msg-header">';
-                    html += '<span class="nickname">' + escapeHtml(m.nickname) + (m.featured ? ' ⭐ 精选' : '') + '</span>';
+                    html += '<span class="nickname">' + escapeHtml(m.nickname) + (m.featured ? ' ⭐ 精选' : '') +
+                        '</span>';
                     html += '<span class="time">' + escapeHtml(m.time) + '</span>';
                     html += '</div>';
                     html += '<div class="msg-content">' + escapeHtml(m.content) + '</div>';
                     html += '<div class="msg-actions">';
                     var liked = likedMessages[m.id] || false;
-                    html += '<button class="like-msg-btn' + (liked ? ' liked' : '') + '" onclick="toggleMessageLike(' + m.id + ')">❤️ ' + (m.likes || 0) + '</button>';
+                    html += '<button class="like-msg-btn' + (liked ? ' liked' : '') + '" onclick="toggleMessageLike(' +
+                        m.id + ')">❤️ ' + (m.likes || 0) + '</button>';
                     html += '</div>';
                     html += '</div>';
                 });
             }
             html += '<div class="message-form">';
-            html += '<h4 style="font-weight:normal;font-family:\'华文楷体\',\'KaiTi\',serif;letter-spacing:2px;margin-bottom:8px;">📝 发表留言</h4>';
+            html +=
+                '<h4 style="font-weight:normal;font-family:\'华文楷体\',\'KaiTi\',serif;letter-spacing:2px;margin-bottom:8px;">📝 发表留言</h4>';
             html += '<div class="form-row">';
-            html += '<div class="form-group"><label>昵称 *</label><input type="text" id="msgNickname" placeholder="您的昵称" /></div>';
-            html += '<div class="form-group"><label>邮箱</label><input type="email" id="msgEmail" placeholder="邮箱（可选）" /></div>';
+            html +=
+                '<div class="form-group"><label>昵称 *</label><input type="text" id="msgNickname" placeholder="您的昵称" /></div>';
+            html +=
+                '<div class="form-group"><label>邮箱</label><input type="email" id="msgEmail" placeholder="邮箱（可选）" /></div>';
             html += '</div>';
-            html += '<div class="form-group"><textarea id="msgContent" rows="3" placeholder="写下您的留言..."></textarea></div>';
+            html +=
+                '<div class="form-group"><textarea id="msgContent" rows="3" placeholder="写下您的留言..."></textarea></div>';
             html += '<button class="btn btn-primary" onclick="submitMessage()">发表留言</button>';
             html += '<span style="font-size:12px;color:#8a7a6a;margin-left:12px;">💡 留言需后台审核通过后显示</span>';
             html += '</div></div>';
@@ -1302,7 +1919,8 @@
             }
             html += '</div>';
             html += '<div class="chat-input-row">';
-            html += '<input type="text" id="chatInput" placeholder="输入消息..." onkeydown="if(event.key===\'Enter\')sendChatMessage()" />';
+            html +=
+                '<input type="text" id="chatInput" placeholder="输入消息..." onkeydown="if(event.key===\'Enter\')sendChatMessage()" />';
             html += '<button onclick="sendChatMessage()">发送</button>';
             html += '</div>';
             html += '<div style="font-size:12px;color:#8a7a6a;margin-top:4px;">💡 消息将作为留言提交，审核后显示。</div>';
@@ -1479,14 +2097,16 @@
             html += '<span>✍️ ' + escapeHtml(post.author || siteSettings.authorName || '墨轩主') + '</span>';
             html += '<span>👁️ ' + (post.views || 0) + '</span>';
             html += '<span>❤️ ' + (post.likes || 0) + '</span>';
-            if (post.tags && post.tags.length) html += '<span>🏷️ ' + post.tags.map(function(t) { return '#' + escapeHtml(t); }).join(' ') + '</span>';
+            if (post.tags && post.tags.length) html += '<span>🏷️ ' + post.tags.map(function(t) { return '#' +
+                    escapeHtml(t); }).join(' ') + '</span>';
             html += '</div>';
             var rendered = marked.parse(post.content);
             html += '<div class="body">' + rendered + '</div>';
 
             var liked = likedPosts[post.id] || false;
             html += '<div class="like-area">';
-            html += '<button class="like-btn' + (liked ? ' liked' : '') + '" onclick="togglePostLike(' + post.id + ')">❤️ ' + (liked ? '已赞' : '点赞') + '</button>';
+            html += '<button class="like-btn' + (liked ? ' liked' : '') + '" onclick="togglePostLike(' + post.id +
+                ')">❤️ ' + (liked ? '已赞' : '点赞') + '</button>';
             html += '<span class="like-count">' + (post.likes || 0) + ' 人喜欢</span>';
             html += '</div>';
 
@@ -1495,9 +2115,12 @@
             html += '<div class="share-title">📤 分享这篇文章</div>';
             html += '<div class="share-buttons">';
             html += '<button onclick="shareCopyLink(\'' + url + '\')">📋 复制链接</button>';
-            html += '<button class="btn-wechat" onclick="shareWechat(\'' + url + '\', \'' + escapeHtml(post.title) + '\')">💬 微信</button>';
-            html += '<button class="btn-weibo" onclick="shareWeibo(\'' + url + '\', \'' + escapeHtml(post.title) + '\')">🐦 微博</button>';
-            html += '<button class="btn-qq" onclick="shareQQ(\'' + url + '\', \'' + escapeHtml(post.title) + '\')">💬 QQ</button>';
+            html += '<button class="btn-wechat" onclick="shareWechat(\'' + url + '\', \'' + escapeHtml(post.title) +
+                '\')">💬 微信</button>';
+            html += '<button class="btn-weibo" onclick="shareWeibo(\'' + url + '\', \'' + escapeHtml(post.title) +
+                '\')">🐦 微博</button>';
+            html += '<button class="btn-qq" onclick="shareQQ(\'' + url + '\', \'' + escapeHtml(post.title) +
+                '\')">💬 QQ</button>';
             html += '</div></div>';
 
             html += '<div class="nav-links">';
@@ -1511,7 +2134,8 @@
             if (recommend.length > 0) {
                 html += '<div class="recommend"><h4>📌 推荐阅读</h4>';
                 recommend.slice(0, 5).forEach(function(p) {
-                    html += '<div class="rec-item" onclick="navigateToPost(' + p.id + ')">' + escapeHtml(p.title) + ' <span style="color:#8a7a6a;font-size:12px;">(' + p.date + ')</span></div>';
+                    html += '<div class="rec-item" onclick="navigateToPost(' + p.id + ')">' + escapeHtml(p
+                        .title) + ' <span style="color:#8a7a6a;font-size:12px;">(' + p.date + ')</span></div>';
                 });
                 html += '</div>';
             }
@@ -1628,7 +2252,8 @@
                 sorted.forEach(function(p) {
                     html += '<div class="post-item" onclick="navigateToPost(' + p.id + ')">';
                     html += '<div class="title">' + escapeHtml(p.title) + '</div>';
-                    html += '<div class="meta"><span>📅 ' + p.date + '</span><span>👁️ ' + (p.views || 0) + '</span><span>❤️ ' + (p.likes || 0) + '</span></div>';
+                    html += '<div class="meta"><span>📅 ' + p.date + '</span><span>👁️ ' + (p.views || 0) +
+                        '</span><span>❤️ ' + (p.likes || 0) + '</span></div>';
                     html += '</div>';
                 });
             }
@@ -1655,7 +2280,8 @@
             posts.forEach(function(p) { if (map[p.category]) map[p.category]++; else map[p.category] = 1; });
             var html = '';
             for (var cat in map) {
-                html += '<li onclick="filterByCategory(\'' + cat + '\')"><span>' + escapeHtml(cat) + '</span><span class="count">' + map[cat] + ' 篇</span></li>';
+                html += '<li onclick="filterByCategory(\'' + cat + '\')"><span>' + escapeHtml(cat) +
+                    '</span><span class="count">' + map[cat] + ' 篇</span></li>';
             }
             container.innerHTML = html || '<li style="color:#8a7a6a;cursor:default;">暂无分类</li>';
         }
@@ -1743,10 +2369,18 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // ============================================================
-        //  改动点 ④：初始化播放器
-        //  位置：在 initFrontend 函数中，数据加载完成且首页渲染后
-        // ============================================================
+
+        /* ================================================================
+             ═════════════════════════════════════════════════════════════════
+             板块⑦ ：🎵 播放器初始化
+             ═════════════════════════════════════════════════════════════════
+             说明：调用 player.js 暴露的 initPlayer 方法启动播放器
+             位置：在 initFrontend 函数中，数据加载完成且首页渲染后
+             后期修改：
+               - 如果你想自定义歌单，传入 { musicList: 你的歌单数组 }
+               - 如果 musicList 为空，播放器会自动加载 config.json
+             搜索定位：Ctrl+F 搜索 "播放器初始化"
+             ================================================================ */
         function initFrontend() {
             applySiteSettings();
             applyFontSettings();
@@ -1781,7 +2415,7 @@
             // ★★★ 播放器初始化 ★★★
             // 确保在 renderPage 之后调用，此时文章列表已渲染
             if (typeof window.initPlayer === 'function') {
-                // 优先使用 common.js 加载的 musicList
+                // 优先使用 common.js 加载的 musicList（如果有）
                 if (typeof musicList !== 'undefined' && musicList.length > 0) {
                     window.initPlayer({ musicList: musicList });
                     console.log('✅ 播放器已使用 common.js 的 musicList');
@@ -1794,6 +2428,7 @@
                 console.warn('⚠️ window.initPlayer 未定义，请确保 player.js 已加载');
             }
 
+            // 页面可见性变化时刷新数据（从后台切回前台时）
             document.addEventListener('visibilitychange', function() {
                 if (!document.hidden) {
                     loadAllData().then(function() {
@@ -1818,9 +2453,10 @@
             });
         }
 
-        // ============================================================
+
+        // ================================================================
         //  启动
-        // ============================================================
+        // ================================================================
         loadAllData().then(function() {
             initFrontend();
         }).catch(function(err) {
