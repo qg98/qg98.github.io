@@ -582,31 +582,42 @@
             border-color: #c23531;
         }
 
-        .back-to-top {
-            position: fixed;
-    
-            z-index: 998;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: #7a4a34;
-            color: #f5e6d3;
-            border: 2px solid #c23531;
-            font-size: 22px;
-            cursor: pointer;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-        }
-        .back-to-top:hover {
-            background: #5a3222;
-            transform: scale(1.05);
-        }
-        .back-to-top.show {
-            display: flex;
-        }
+        /* ===== 回到顶部按钮：电脑端和手机端都固定在右下角 回到顶部按钮修改为高度45  bottom: 45px; ===== */
+.back-to-top {
+    position: fixed;
+    bottom: 45px;
+    right: 20px;
+    z-index: 998;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #7a4a34;
+    color: #f5e6d3;
+    border: 2px solid #c23531;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+.back-to-top:hover {
+    background: #5a3222;
+    transform: scale(1.05);
+}
+.back-to-top.show {
+    display: flex;
+}
+
+/* ===== 手机端保持右下角，不做任何隐藏 ===== */
+@media (max-width: 768px) {
+    .back-to-top {
+        /* 保持和电脑端一样的定位，没有任何特殊覆盖 */
+        bottom: 30px;
+        right: 20px;
+    }
+}
 
         .interact-tabs {
             display: flex;
